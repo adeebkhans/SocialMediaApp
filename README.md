@@ -63,3 +63,9 @@ npm run build --prefix frontend
 ```
 
 Feel free to modify or add any additional details!
+![Screenshot 2024-10-26 093206](https://github.com/user-attachments/assets/290830f9-f36f-4c2d-84bd-1bbc99816d4f)
+![Screenshot 2024-10-27 183644](https://github.com/user-attachments/assets/5218feae-614f-48a8-96cb-6b5b35fa5e99)
+![Screenshot 2024-10-27 183459](https://github.com/user-attachments/assets/5c531e23-0fe1-4950-9381-eb465ac84c75)
+![Screenshot 2024-10-27 183822](https://github.com/user-attachments/assets/1bd402ce-9526-46bc-9564-0524b7db0f1c)
+
+
