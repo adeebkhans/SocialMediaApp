@@ -36,9 +36,9 @@ app.get("/", (req,res)=>{
 })
 
 //middlewares
-app.use(express.json())
-app.use(cookieParser())
-app.use(urlencoded({extended:true}))
+app.use(express.json()) // to convert json to javascript object on req.body
+app.use(cookieParser()) // parse cookies as JavaScript object on req.cookies
+app.use(urlencoded({extended:true})) // his is typically used for parsing form data submitted via HTML forms with the application/x-www-form-urlencoded content type.
 
 const corsOptions={
     origin:'http://localhost:5173',

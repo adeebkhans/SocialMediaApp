@@ -101,7 +101,7 @@ const Signup = () => {
                         Please wait
                     </Button>
                 ) : (
-                    <Button type='submit'>SingUp</Button>
+                    <Button type='submit'>SignUp</Button>
                 )}
                 <span className='text-center'>Already have an account? <Link to="/login" className='text-blue-600'>Login</Link></span>
             </form>
