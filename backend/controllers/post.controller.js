@@ -13,7 +13,7 @@ export const addNewPost = async (req, res) => {
 
         if (!image) return res.status(400).json({ message: 'Image required' });
 
-        // image upload 
+        // image upload using sharp (Sharp can generate a buffer directly)
         const optimizedImageBuffer = await sharp(image.buffer)
             .resize({ width: 800, height: 800, fit: 'inside' })
             .toFormat('jpeg', { quality: 80 })
@@ -95,6 +95,7 @@ export const likePost = async (req, res) => {
         if (!post) return res.status(404).json({ message: 'Post not found', success: false });
 
         // like logic started
+        // post.likes.push(...) if we click two times it will add two like from same user  
         await post.updateOne({ $addToSet: { likes: likeKrneWalaUserKiId } });
         await post.save();
 

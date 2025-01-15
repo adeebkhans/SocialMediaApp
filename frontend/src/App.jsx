@@ -17,7 +17,7 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 const browserRouter = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoutes><MainLayout /></ProtectedRoutes>,
+    element: <ProtectedRoutes><MainLayout /></ProtectedRoutes>, // will contain sidebar
     children: [
       {
         path: '/',

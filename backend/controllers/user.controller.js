@@ -62,9 +62,9 @@ export const login = async (req, res) => {
 
         // populate each post if in the posts array
         const populatedPosts = await Promise.all(
-            user.posts.map( async (postId) => {
+            user.posts.map(async (postId) => {
                 const post = await Post.findById(postId);
-                if(post.author.equals(user._id)){
+                if (post.author.equals(user._id)) {
                     return post;
                 }
                 return null;
@@ -104,7 +104,17 @@ export const logout = async (_, res) => {
 export const getProfile = async (req, res) => {
     try {
         const userId = req.params.id;
-        let user = await User.findById(userId).populate({path:'posts', createdAt:-1}).populate('bookmarks');
+        let user = await User.findById(userId)
+            .populate({
+                path: 'posts',
+                options: { sort: { createdAt: -1 } }, // Sort the posts by creation date
+                populate: {
+                    path: 'author', // Populate the author field inside each post
+                    select: 'username profilePicture', // Select specific fields to reduce payload
+                },
+            })
+            .populate('bookmarks'); // Populate bookmarks if needed
+
         return res.status(200).json({
             user,
             success: true

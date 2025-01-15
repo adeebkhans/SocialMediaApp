@@ -9,13 +9,15 @@ import { Badge } from './ui/badge';
 import { AtSign, Heart, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { setAuthUser } from '@/redux/authSlice';
+import CommentDialog from './CommentDialog';
+import { setSelectedPost } from '@/redux/postSlice'
 
 const Profile = () => {
   const params = useParams();
   const userId = params.id;
   useGetUserProfile(userId);
   const [activeTab, setActiveTab] = useState('posts');
-
+  const [open, setOpen] = useState(false);
   const { userProfile, user } = useSelector(store => store.auth);
   const dispatch = useDispatch();
   
@@ -153,14 +155,19 @@ const Profile = () => {
                       <span>{post?.likes?.length}</span>
                     </button>
                     <button className="flex items-center gap-2 hover:text-gray-300">
-                      <MessageCircle />
+                      <MessageCircle onClick={()=>{
+                        dispatch(setSelectedPost(post))
+                        setOpen(true)}
+                      }/>
                       <span>{post?.comments?.length}</span>
                     </button>
                   </div>
                 </div>
+                <CommentDialog open={open} setOpen={setOpen} />
               </div>
             ))}
           </div>
+
         </div>
       </div>
     </div>
