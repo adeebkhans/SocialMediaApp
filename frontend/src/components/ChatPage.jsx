@@ -48,7 +48,7 @@ const ChatPage = () => {
                         suggestedUsers.map((suggestedUser) => {
                             const isOnline = onlineUsers.includes(suggestedUser?._id);
                             return (
-                                <div 
+                                <div key={suggestedUser?._id}
                                     onClick={() => dispatch(setSelectedUser(suggestedUser))} 
                                     className='flex gap-3 items-center p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-shadow duration-300 shadow-sm hover:shadow-md'
                                 >

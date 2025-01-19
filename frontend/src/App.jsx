@@ -13,6 +13,7 @@ import { setOnlineUsers } from './redux/chatSlice'
 import { useEffect } from 'react'
 import { setLikeNotification } from './redux/rtnSlice'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const browserRouter = createBrowserRouter([
   {
@@ -87,7 +88,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={browserRouter} />
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+        <RouterProvider router={browserRouter} />
+      </GoogleOAuthProvider>
     </>
   )
 }

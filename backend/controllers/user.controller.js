@@ -50,6 +50,15 @@ export const login = async (req, res) => {
                 success: false,
             });
         }
+
+        // Prevent Google users from logging in traditionally
+        if (user.isGoogleUser) {
+            return res.status(403).json({
+                message: "Please log in using Google.",
+                success: false,
+            });
+        }
+
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(401).json({
@@ -91,6 +100,65 @@ export const login = async (req, res) => {
         console.log(error);
     }
 };
+
+export const googleLogin = async (req, res) => {
+    try {
+        const { email, username, googleId } = req.body;
+
+        if (!email || !googleId) {
+            return res.status(400).json({
+                message: "Invalid Google login data.",
+                success: false,
+            });
+        }
+
+        let user = await User.findOne({ email });
+
+        if (user) {
+            // If user exists but isn't marked as a Google user, update it
+            if (!user.isGoogleUser) {
+                user.googleId = googleId;
+                user.isGoogleUser = true;
+                await user.save();
+            }
+        } else {
+            // Create a new Google user
+            user = await User.create({
+                username,
+                email,
+                password: null, // No password for Google users
+                googleId,
+                isGoogleUser: true,
+            });
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1d' });
+
+        return res.cookie('token', token, { httpOnly: true, sameSite: 'strict', maxAge: 1 * 24 * 60 * 60 * 1000 }).json({
+            message: `Welcome, ${user.username}!`,
+            success: true,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                profilePicture: user.profilePicture,
+                bio: user.bio,
+                followers: user.followers,
+                following: user.following,
+                posts: user.posts,
+                bookmarks: user.bookmarks,
+            },
+        });
+    } catch (error) {
+        console.error('Error during Google login:', error);
+        res.status(500).json({
+            message: "Internal server error.",
+            success: false,
+        });
+    }
+};
+
+
 export const logout = async (_, res) => {
     try {
         return res.cookie("token", "", { maxAge: 0 }).json({
